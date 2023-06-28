@@ -30,9 +30,9 @@
   "exports": "./index.js",
   "main": "index.js",
   "types": "types/index.d.ts",
-  "engines": {
-    "node": ">=18.0.0",
-    "npm": ">=8.0.0"
+  "scripts": {
+    "test": "node --experimental-test-coverage test",
+    "test:watch": "node --watch --experimental-test-coverage test"
   },
   "dependencies": {
     "cjs-module-lexer": "^1.2.3",
@@ -44,8 +44,8 @@
   "peerDependencies": {
     "rollup": "^3.x"
   },
-  "scripts": {
-    "test": "node --experimental-test-coverage test",
-    "test:watch": "node --watch --experimental-test-coverage test"
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
   }
 }
