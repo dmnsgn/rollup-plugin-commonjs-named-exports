@@ -1,0 +1,51 @@
+{
+  "name": "rollup-plugin-commonjs-named-exports",
+  "version": "1.0.0",
+  "description": "Package description.",
+  "keywords": [
+    "rollup",
+    "plugin",
+    "rollup-plugin",
+    "commonjs",
+    "cjs",
+    "named-exports"
+  ],
+  "homepage": "https://github.com/dmnsgn/rollup-plugin-commonjs-named-exports",
+  "bugs": "https://github.com/dmnsgn/rollup-plugin-commonjs-named-exports/issues",
+  "repository": "dmnsgn/rollup-plugin-commonjs-named-exports",
+  "funding": [
+    {
+      "type": "individual",
+      "url": "https://paypal.me/dmnsgn"
+    },
+    {
+      "type": "individual",
+      "url": "https://commerce.coinbase.com/checkout/56cbdf28-e323-48d8-9c98-7019e72c97f3"
+    }
+  ],
+  "license": "MIT",
+  "author": "Damien Seguin (https://github.com/dmnsgn)",
+  "sideEffects": false,
+  "type": "module",
+  "exports": "./index.js",
+  "main": "index.js",
+  "types": "types/index.d.ts",
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  },
+  "dependencies": {
+    "cjs-module-lexer": "^1.2.3",
+    "is-valid-identifier": "^2.0.2"
+  },
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^25.0.2"
+  },
+  "peerDependencies": {
+    "rollup": "^3.x"
+  },
+  "scripts": {
+    "test": "node --experimental-test-coverage test",
+    "test:watch": "node --watch --experimental-test-coverage test"
+  }
+}
