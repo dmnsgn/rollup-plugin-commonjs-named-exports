@@ -22,7 +22,7 @@ const getCjsNamedExports = (filename, visited = new Set()) => {
 
   try {
     const { exports, reexports } = cjsModuleLexer.parse(
-      readFileSync(filename, "utf8")
+      readFileSync(filename, "utf8"),
     );
 
     const resolvedReexports = reexports.length
@@ -30,15 +30,15 @@ const getCjsNamedExports = (filename, visited = new Set()) => {
           .map((reexport) =>
             getCjsNamedExports(
               createRequire(filename).resolve(reexport),
-              visited
-            )
+              visited,
+            ),
           )
           .flat(Infinity)
           .filter(Boolean)
       : [];
 
     const resolvedExports = Array.from(
-      new Set([...exports, ...resolvedReexports])
+      new Set([...exports, ...resolvedReexports]),
     ).filter(isValidNamedExport);
 
     return isMainEntrypoint && resolvedExports.length === 0

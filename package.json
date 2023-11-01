@@ -1,6 +1,6 @@
 {
   "name": "rollup-plugin-commonjs-named-exports",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Re-export CommonJS named exports using Node.js cjs-module-lexer.",
   "keywords": [
     "rollup",
