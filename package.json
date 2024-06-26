@@ -40,17 +40,18 @@
     "test:watch": "node --watch --experimental-test-coverage test"
   },
   "dependencies": {
-    "cjs-module-lexer": "^1.2.3",
+    "cjs-module-lexer": "^1.3.1",
     "is-valid-identifier": "^2.0.2"
   },
   "devDependencies": {
-    "@rollup/plugin-commonjs": "^25.0.2"
+    "@rollup/plugin-commonjs": "^26.0.1"
   },
   "peerDependencies": {
     "rollup": "^3.x || ^4.x"
   },
   "engines": {
-    "node": ">=20.0.0",
-    "npm": ">=9.6.4"
+    "node": ">=22.0.0",
+    "npm": ">=10.5.1",
+    "snowdev": ">=2.0.x"
   }
 }
