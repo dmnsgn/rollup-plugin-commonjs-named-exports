@@ -1,6 +1,6 @@
 {
   "name": "rollup-plugin-commonjs-named-exports",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Re-export CommonJS named exports using Node.js cjs-module-lexer.",
   "keywords": [
     "rollup",
@@ -12,7 +12,10 @@
   ],
   "homepage": "https://github.com/dmnsgn/rollup-plugin-commonjs-named-exports",
   "bugs": "https://github.com/dmnsgn/rollup-plugin-commonjs-named-exports/issues",
-  "repository": "dmnsgn/rollup-plugin-commonjs-named-exports",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dmnsgn/rollup-plugin-commonjs-named-exports.git"
+  },
   "funding": [
     {
       "type": "individual",
