@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file. See [commit-and-tag-version](https://github.com/absolute-version/commit-and-tag-version) for commit guidelines.
 
+## [1.0.3](https://github.com/dmnsgn/rollup-plugin-commonjs-named-exports/compare/v1.0.2...v1.0.3) (2024-06-26)
+
+
+
 ## [1.0.2](https://github.com/dmnsgn/rollup-plugin-commonjs-named-exports/compare/v1.0.1...v1.0.2) (2023-11-01)
 
 
