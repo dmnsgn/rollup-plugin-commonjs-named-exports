@@ -70,18 +70,25 @@ export default () => ({
     if (id.endsWith(SUFFIX)) {
       const entryId = id.slice(0, -SUFFIX.length);
 
-      const { hasDefaultExport, meta } = this.getModuleInfo(entryId);
+      const { hasDefaultExport, meta, code } = this.getModuleInfo(entryId);
+
+      let shebang = "";
+      if (code.startsWith("#!")) {
+        const shebangEndPosition = code.indexOf("\n") + 1;
+        shebang = code.slice(0, shebangEndPosition);
+      }
+
       const file = JSON.stringify(entryId);
-      let code = `export * from ${file};`;
-      if (hasDefaultExport) code += `export { default } from ${file};`;
+      let result = `${shebang}export * from ${file};`;
+      if (hasDefaultExport) result += `export { default } from ${file};`;
 
       if (meta?.commonjs?.isCommonJS) {
         const uniqueNamedExports = getCjsNamedExports(entryId) || [];
         if (uniqueNamedExports.length) {
-          code += `export { ${uniqueNamedExports.join(",")} } from ${file};`;
+          result += `export { ${uniqueNamedExports.join(",")} } from ${file};`;
         }
       }
-      return code;
+      return result;
     }
     return null;
   },
