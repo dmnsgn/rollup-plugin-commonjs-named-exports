@@ -21,9 +21,19 @@ const getCjsNamedExports = (filename, visited = new Set()) => {
   visited.add(filename);
 
   try {
-    const { exports, reexports } = cjsModuleLexer.parse(
-      readFileSync(filename, "utf8"),
-    );
+    const source = readFileSync(filename, "utf8");
+
+    // isCJS: https://github.com/rollup/plugins/blob/639f45638234c1c3fabfb13615c78bebaef89ef2/packages/commonjs/src/parse.js#L12
+    if (
+      // fast negative: no CJS keywords (require, module, exports) present
+      !/\b(?:require|module|exports)\b/.test(source) ||
+      // has ESM static import/export declarations
+      /(?:^|\n)\s*(?:import\s|import\(|export\s|export\{)/.test(source)
+    ) {
+      return isMainEntrypoint ? null : [];
+    }
+
+    const { exports, reexports } = cjsModuleLexer.parse(source);
 
     const resolvedReexports = reexports.length
       ? reexports
@@ -44,12 +54,15 @@ const getCjsNamedExports = (filename, visited = new Set()) => {
     return isMainEntrypoint && resolvedExports.length === 0
       ? null
       : resolvedExports;
-  } catch (error) {
-    console.warn(`${PLUGIN_NAME} ${filename}: ${error.message}`);
+  } catch {
+    // parse failure = not analyzable as CJS, treat as no exports
+    console.debug(`${PLUGIN_NAME} ${filename}: ${error.message}`);
   }
 };
 
-/** @type {import("rollup").PluginImpl} */
+const namedExportsCache = new Map();
+
+/** @returns {import("rolldown").Plugin} */
 export default () => ({
   name: PLUGIN_NAME,
   async resolveId(source, importer, options) {
@@ -60,8 +73,12 @@ export default () => ({
       });
       if (!resolution || resolution.external) return resolution;
 
-      await this.load(resolution);
+      // getCjsNamedExports returns null when no static CJS exports are found
+      // (either ESM or fully-dynamic CJS). Only wrap when there are named exports.
+      const namedExports = getCjsNamedExports(resolution.id);
+      if (namedExports == null) return resolution;
 
+      namedExportsCache.set(resolution.id, namedExports);
       return `${resolution.id}${SUFFIX}`;
     }
     return null;
@@ -70,8 +87,7 @@ export default () => ({
     if (id.endsWith(SUFFIX)) {
       const entryId = id.slice(0, -SUFFIX.length);
 
-      const { hasDefaultExport, meta, code } = this.getModuleInfo(entryId);
-
+      const code = readFileSync(entryId, "utf8");
       let shebang = "";
       if (code.startsWith("#!")) {
         const shebangEndPosition = code.indexOf("\n") + 1;
@@ -79,14 +95,11 @@ export default () => ({
       }
 
       const file = JSON.stringify(entryId);
+      const uniqueNamedExports = namedExportsCache.get(entryId) || [];
       let result = `${shebang}export * from ${file};`;
-      if (hasDefaultExport) result += `export { default } from ${file};`;
-
-      if (meta?.commonjs?.isCommonJS) {
-        const uniqueNamedExports = getCjsNamedExports(entryId) || [];
-        if (uniqueNamedExports.length) {
-          result += `export { ${uniqueNamedExports.join(",")} } from ${file};`;
-        }
+      result += `export { default } from ${file};`;
+      if (uniqueNamedExports.length) {
+        result += `export { ${uniqueNamedExports.join(",")} } from ${file};`;
       }
       return result;
     }

@@ -4,8 +4,10 @@
   "description": "Re-export CommonJS named exports using Node.js cjs-module-lexer.",
   "keywords": [
     "rollup",
+    "rolldown",
     "plugin",
     "rollup-plugin",
+    "rolldown-plugin",
     "commonjs",
     "cjs",
     "named-exports"
@@ -47,14 +49,25 @@
     "is-valid-identifier": "^2.0.2"
   },
   "devDependencies": {
-    "@rollup/plugin-commonjs": "^26.0.1"
+    "@rollup/plugin-commonjs": "^26.0.1",
+    "rolldown": "^1.1.0",
+    "rollup": "^3.30.0"
   },
   "peerDependencies": {
+    "rolldown": "^1.x",
     "rollup": "^3.x || ^4.x"
+  },
+  "peerDependenciesMeta": {
+    "rolldown": {
+      "optional": true
+    },
+    "rollup": {
+      "optional": true
+    }
   },
   "engines": {
     "node": ">=22.0.0",
     "npm": ">=10.5.1",
-    "snowdev": ">=2.0.x"
+    "snowdev": ">=2.7.x"
   }
 }
