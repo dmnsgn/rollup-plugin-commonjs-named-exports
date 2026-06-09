@@ -54,7 +54,7 @@ const getCjsNamedExports = (filename, visited = new Set()) => {
     return isMainEntrypoint && resolvedExports.length === 0
       ? null
       : resolvedExports;
-  } catch {
+  } catch (error) {
     // parse failure = not analyzable as CJS, treat as no exports
     console.debug(`${PLUGIN_NAME} ${filename}: ${error.message}`);
   }
