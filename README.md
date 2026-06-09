@@ -44,6 +44,29 @@ npm install rollup-plugin-commonjs-named-exports
 
 ## Usage
 
+### Rolldown
+
+No additional plugins required — Rolldown handles CJS conversion natively.
+
+Create a `rolldown.config.js` [configuration file](https://rolldown.rs/guide/configuration-file) and import the plugin:
+
+```js
+import commonjsNamedExports from "rollup-plugin-commonjs-named-exports";
+
+export default {
+  input: "src/index.js",
+  output: {
+    dir: "output",
+    format: "es",
+  },
+  plugins: [commonjsNamedExports()],
+};
+```
+
+### Rollup
+
+`@rollup/plugin-commonjs` is still required for the actual CJS→ESM conversion. This plugin only provides the named export declarations on top.
+
 Create a `rollup.config.js` [configuration file](https://www.rollupjs.org/guide/en/#configuration-files) and import the plugin:
 
 ```js
@@ -60,6 +83,12 @@ export default {
 ```
 
 Then call `rollup` either via the [CLI](https://www.rollupjs.org/guide/en/#command-line-reference) or the [API](https://www.rollupjs.org/guide/en/#javascript-api).
+
+## Caveats
+
+- **Static analysis only**: named export detection relies on [`cjs-module-lexer`](https://github.com/nicolo-ribaudo/cjs-module-lexer) (the same lexer Node.js uses internally). Modules that assign exports entirely at runtime (e.g. `module.exports[key] = value` inside a loop) will not have their named exports detected; only the `default` export will be available.
+- **Entry points only**: the plugin only wraps modules declared as bundle entry points. Non-entry CJS imports inside your source are not affected.
+- **ESM entries are passed through**: if an entry has no statically detectable CJS exports the plugin is a no-op for that entry, leaving it to the bundler's default handling.
 
 ## License
 
